@@ -15,4 +15,8 @@
         <filter-name>HomeFilter</filter-name>
         <url-pattern>/home.jsp</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>HomeFilter</filter-name>
+        <url-pattern>/pages/feedback.jsp</url-pattern>
+    </filter-mapping>
 </web-app>

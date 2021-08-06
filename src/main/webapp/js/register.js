@@ -7,9 +7,28 @@ $(document).ready(function () {
         let birthDate = $('#birthDate').val();
         let address = $('#address').val();
         let email = $('#email').val();
-        let isAdmin = $('#isAdmin').val();
-        if (!reg.test(email)) {
-            alert("Invalid Email Format");
+        let isAdmin = $('input[name="isAdmin"]:checked').val();
+        let message ="";
+        if (userName == null || userName == '') {
+            message += "User Name cannot be empty\n";
+        }
+        if (password == null || password == '') {
+            message += "Password cannot be empty\n";
+        }
+        alert(birthDate==null);
+        if (birthDate == null) {
+            message += "BirthDate cannot be empty\n";
+        }
+        if (isAdmin == null) {
+            message += "Admin cannot be empty\n";
+        }
+        if (email == null || email == '') {
+            message += "Email cannot be empty\n";
+        }else if (!reg.test(email)) {
+            message += "Invalid Email Format\n";
+        }
+        if(message.length>1){
+            alert(message);
             return false;
         }
         $.ajax({

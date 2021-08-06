@@ -4,6 +4,8 @@ import com.example.week3day5.dao.UserDAO;
 import com.example.week3day5.entity.User;
 import com.example.week3day5.service.UserService;
 
+import java.util.List;
+
 public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
 
@@ -19,5 +21,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addUser(User user) {
         return userDAO.addUser(user);
+    }
+
+    @Override
+    public List<User> getAdmins() {
+        return userDAO.getAdmins();
     }
 }

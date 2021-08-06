@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @WebServlet(name = "userServlet", value = "/user")
 public class UserServlet extends HttpServlet {
@@ -47,6 +48,22 @@ public class UserServlet extends HttpServlet {
             prepareAllUserResponse(allUsersResponse, false, "User Name Exist");
         } else {
             prepareAllUserResponse(allUsersResponse, false, "Add User Failed");
+        }
+        PrintWriter writer = response.getWriter();
+        Gson gson = new Gson();
+        String addResponseJson = gson.toJson(allUsersResponse);
+        writer.append(addResponseJson);
+        writer.close();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        AllUsersResponse allUsersResponse = new AllUsersResponse();
+        List<User> users = userService.getAdmins();
+        request.getSession().setAttribute("admins",users);
+        if (users.size() > 0) {
+            prepareAllUserResponse(allUsersResponse, true, "");
+        } else {
+            prepareAllUserResponse(allUsersResponse, false, "Admins not found");
         }
         PrintWriter writer = response.getWriter();
         Gson gson = new Gson();

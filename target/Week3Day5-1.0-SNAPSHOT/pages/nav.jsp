@@ -14,7 +14,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <title>Title</title>
 </head>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
+<script type="text/javascript" src="<%=basePath%>js/nav.js"></script>
 <body>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Navigation</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
@@ -23,11 +29,15 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link" href="home.jsp">Home</a>
-            <a class="nav-item nav-link" href="pages/login.jsp">Login</a>
-            <a class="nav-item nav-link" href="pages/register.jsp">Registration</a>
-            <a class="nav-item nav-link" href="pages/feedback.jsp">Feedback</a>
-            <a class="nav-item nav-link" href="pages/contactUs.jsp">Contact Us</a>
+            <a class="nav-item nav-link" href="<%=basePath%>home.jsp">Home</a>
+            <% if (session.getAttribute("user") == null) {%>
+            <a class="nav-item nav-link" href="<%=basePath%>pages/login.jsp">Login</a><%}%>
+            <a class="nav-item nav-link" href="<%=basePath%>pages/register.jsp">Registration</a>
+            <a class="nav-item nav-link" href="<%=basePath%>pages/feedback.jsp">Feedback</a>
+            <a class="nav-item nav-link" href="<%=basePath%>pages/contactUs.jsp">Contact Us</a>
+            <% if (session.getAttribute("user") != null) {%><a class="nav-item nav-link"
+                                                               href="javascript:void(0);"
+                                                               onclick="logOut()">Log &nbsp;out</a><%}%>
         </div>
     </div>
 </nav>

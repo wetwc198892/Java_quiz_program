@@ -14,7 +14,7 @@ public class SubmissionServiceImpl implements SubmissionService {
     }
     @Override
     public int addSubmission(String startTime, String endTime, int userId, Quiz quiz,int isPass) {
-        return submissionDAO.addSubmission(startTime,endTime,userId,quiz.getId(),isPass);
+        return submissionDAO.addSubmission(startTime,endTime,quiz.getId(),userId,isPass);
     }
 
     @Override

@@ -23,7 +23,8 @@ public class QuizDAO {
         this.ds = MySqlDS.getDs();
     }
 
-    private static final String SELECT_QUIZ = "select a.id as id,name,a.difficulty as difficulty, a.timeLimit as timeLimit,a.description as description,b.id as questionId,b.Description as questionDescription,c.id as choiceId,c.description as choiceDescription,c.isAnswer as isAnswer from quiztypes a INNER JOIN questions b on a.id=b.quizTypeId INNER JOIN choices c on b.id = c.questionId where a.id=? ORDER BY  RAND() LIMIT 10";
+    private static final String SELECT_QUIZ = "SELECT a.id AS id,NAME,a.difficulty AS difficulty,a.timeLimit AS timeLimit,a.description AS description,b.id AS questionId,b.Description AS questionDescription,c.id AS choiceId,c.description AS choiceDescription,c.isAnswer AS isAnswer FROM quiztypes a INNER JOIN (\n" +
+            "SELECT id,description,quizTypeId FROM questions WHERE quizTypeId=? ORDER BY RAND() LIMIT 10) b ON a.id=b.quizTypeId INNER JOIN choices c ON b.id=c.questionId";
     private static final String SELECT_ALL_QUIZ = "select * from quiztypes";
 
     public List<Quiz> getAllQuiz() {

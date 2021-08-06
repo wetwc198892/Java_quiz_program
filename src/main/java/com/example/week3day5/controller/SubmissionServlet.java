@@ -48,8 +48,9 @@ public class SubmissionServlet extends HttpServlet {
         }
         int isPass = getPass(quiz);
         request.getSession().setAttribute("isPass",isPass);
+        String endTime = sdf.format(new Date());
         if (startTime != null) {
-            res = submissionService.addSubmission(startTime, sdf.format(new Date()), user.getId(), quiz,isPass);
+            res = submissionService.addSubmission(startTime, endTime, user.getId(), quiz,isPass);
         }
         if (res > 0) {
             prepareAllQuizResponse(allSubmissionResponse, true, "");
@@ -84,7 +85,7 @@ public class SubmissionServlet extends HttpServlet {
         if (request.getParameter("selectIdx") != null) {
             int curPage = 0;
             if (request.getSession().getAttribute("curPage") != null)
-                curPage = (Integer) request.getSession().getAttribute("curPage") - 1;
+                curPage = (Integer)request.getSession().getAttribute("curPage") - 1;
             Question question = quiz.getQuestions().get(curPage);
             question.setSelectIdx(Integer.parseInt(request.getParameter("selectIdx")));
             quiz.getQuestions().set(curPage, question);

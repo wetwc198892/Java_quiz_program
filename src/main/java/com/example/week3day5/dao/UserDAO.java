@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     private DataSource ds;
@@ -21,6 +23,7 @@ public class UserDAO {
     private static final String SELECT_USER = "SELECT * FROM USERS WHERE name = ? and password = ? and isActive = 1;";
     private static final String SELECT_USER_BY_NAME = "SELECT * FROM USERS WHERE name = ? and isActive = 1;";
     private static final String ADD_USER = "INSERT INTO USERS(name,password,email,isAdmin,birthDate,image,isActive,address) VALUES(?,?,?,?,?,?,?,?)";
+    private static final String SELECT_ADMINS = "SELECT * FROM USERS WHERE isAdmin=1 and isActive=1";
 
     public UserDAO() {
         this.ds = MySqlDS.getDs();
@@ -60,7 +63,7 @@ public class UserDAO {
     public int addUser(User user) {
         try {
             this.conn = ds.getConnection();
-            if(isExist(user.getName()))return -1;
+            if (isExist(user.getName())) return -1;
             this.ps = conn.prepareStatement(ADD_USER);
             ps.setString(1, user.getName());
             ps.setString(2, user.getPassword());
@@ -86,13 +89,43 @@ public class UserDAO {
         return 0;
     }
 
+    public List<User> getAdmins() {
+        List<User> users = new ArrayList<>();
+        try {
+            this.conn = ds.getConnection();
+            this.ps = conn.prepareStatement(SELECT_ADMINS);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setName(rs.getString("name"));
+                user.setBirthDate(sdf.parse(rs.getString("birthDate")));
+                user.setEmail(rs.getString("email"));
+                user.setAddress(rs.getString("address"));
+                user.setId(rs.getInt("id"));
+                users.add(user);
+            }
+        } catch (SQLException | ParseException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return users;
+    }
+
     private boolean isExist(String name) throws SQLException {
-        if(this.conn == null)this.conn = ds.getConnection();
+        if (this.conn == null) this.conn = ds.getConnection();
         this.ps = conn.prepareStatement(SELECT_USER_BY_NAME);
-        ps.setString(1,name);
+        ps.setString(1, name);
         rs = ps.executeQuery();
-        while(rs.next()){
-            if(rs.getString("name")!=null)return true;
+        while (rs.next()) {
+            if (rs.getString("name") != null) return true;
         }
         return false;
     }

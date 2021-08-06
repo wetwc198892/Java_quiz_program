@@ -14,6 +14,7 @@
     <title>Login Page</title>
 </head>
 <body>
+<jsp:include page="/pages/nav.jsp" flush="true"/>
 <div class="container mt-2">
     <form method="post">
         <div class="form-group">

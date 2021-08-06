@@ -1,4 +1,4 @@
-function buttonClick(prevPage, curPage, totalSize) {
+buttonClick = function(prevPage, curPage, totalSize) {
     if (curPage < 1 || curPage > totalSize) {
         return false;
     }
@@ -40,23 +40,24 @@ function submit() {
         dataType: 'json',
         type: 'GET',
         success: function (data) {
+            let con = true;
             if(data.allAnswer=="0"){
-                let con = confirm("You didn't answer all questions. Do you want to submit?");
-                if(!con){
-                    return false;
-                }else{
-                    $.ajax({
-                        url: '/Week_3_Day_5_war_exploded/submission',
-                        data: {
-                            selectIdx: selectIdx
-                        },
-                        dataType: 'json',
-                        type: 'POST',
-                        success: function (data) {
-                            window.location.href = data.redirectUrl;
-                        }
-                    });
-                }
+                con = confirm("You didn't answer all questions. Do you want to submit?");
+            }
+            if(!con){
+                return false;
+            }else{
+                $.ajax({
+                    url: '/Week_3_Day_5_war_exploded/submission',
+                    data: {
+                        selectIdx: selectIdx
+                    },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (data) {
+                        window.location.href = data.redirectUrl;
+                    }
+                });
             }
         }
     });
@@ -82,4 +83,4 @@ setTimeout(function () {
             window.location.href = data.redirectUrl;
         }
     });
-}, 9000000)
+}, 90000)

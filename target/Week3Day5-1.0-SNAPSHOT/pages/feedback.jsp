@@ -15,6 +15,7 @@
     <title>Feedback Page</title>
 </head>
 <body>
+<jsp:include page="nav.jsp" flush="true"/>
 <div class="container mt-2">
     <form method="post">
         <div style="display: inline-block;">

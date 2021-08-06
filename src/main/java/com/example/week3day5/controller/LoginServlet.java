@@ -40,6 +40,17 @@ public class LoginServlet extends HttpServlet {
         writer.append(getResponseJson);
         writer.close();
     }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LoginResponse loginResponse = new LoginResponse();
+        request.getSession().removeAttribute("user");
+        loginResponse.setRedirectUrl(request.getContextPath()+"/home.jsp");
+        prepareLoginResponse(loginResponse,true,"");
+        Gson gson = new Gson();
+        PrintWriter writer = response.getWriter();
+        String getResponseJson = gson.toJson(loginResponse);
+        writer.append(getResponseJson);
+        writer.close();
+    }
 
     private void prepareLoginResponse(LoginResponse response, boolean success, String errorMessage) {
         response.setServiceStatus(new ServiceStatus(success ? "SUCCESS" : "FAILED", success, errorMessage));

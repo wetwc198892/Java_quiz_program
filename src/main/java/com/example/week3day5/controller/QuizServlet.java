@@ -32,6 +32,10 @@ public class QuizServlet extends HttpServlet {
         if (request.getSession().getAttribute("quiz") == null) {
             quiz = quizService.getQuestion(Integer.parseInt(request.getParameter("quizId")));
             request.getSession().setAttribute("startTime",sdf.format(new Date()));
+            Date date = new Date();
+            int min = date.getMinutes();
+            date.setMinutes(min+15);
+            request.getSession().setAttribute("endTime",sdf.format(date));
             if (quiz == null || quiz.getName() == null) {
                 prepareAllQuizResponse(allQuizResponse, false, "Quiz not exist");
             } else {
@@ -49,7 +53,7 @@ public class QuizServlet extends HttpServlet {
                 question.setSelectIdx(Integer.parseInt(request.getParameter("selectIdx")));
                 quiz.getQuestions().set(Integer.parseInt(request.getParameter("prevPage")) - 1, question);
             }
-            request.getSession().setAttribute("curPage", request.getParameter("curPage"));
+            request.getSession().setAttribute("curPage", Integer.parseInt(request.getParameter("curPage")));
             request.getSession().setAttribute("question", quiz.getQuestions().get(Integer.parseInt(request.getParameter("curPage")) - 1));
             allQuizResponse.setRedirectUrl(request.getContextPath() + "/pages/quiz.jsp");
             prepareAllQuizResponse(allQuizResponse, true, "");
